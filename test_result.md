@@ -101,3 +101,275 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Test the admin API endpoints for a Minecraft Server List application using Supabase. Added Blog Category and Post management features with delete functionality. NEW: Added server approval system - servers now need admin approval before appearing in public list."
+
+backend:
+  - task: "GET /api/admin/users - Get all users"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested GET /api/admin/users endpoint. Returns array of user objects with id, email, role, isActive, createdAt. Retrieved 1 user successfully."
+
+  - task: "GET /api/admin/servers/pending - Get pending servers"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented endpoint to get servers with approvalStatus='pending' for admin review."
+
+  - task: "GET /api/admin/servers/all - Get all servers for admin"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented endpoint to get all servers regardless of approval status for admin management."
+
+  - task: "PATCH /api/admin/servers/:id/approve - Approve server"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented endpoint to approve a server (sets approvalStatus='approved')."
+
+  - task: "PATCH /api/admin/servers/:id/reject - Reject server"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented endpoint to reject a server (sets approvalStatus='rejected')."
+
+  - task: "PATCH /api/admin/servers/:id/pending - Set server to pending"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented endpoint to set server back to pending status."
+
+  - task: "POST /api/servers - Create server with pending status"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Updated server creation to set approvalStatus='pending' by default. New servers won't appear in public list until approved."
+
+  - task: "GET /api/servers - Public servers list (only approved)"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Updated to only return servers with approvalStatus='approved' or null (backward compatibility)."
+
+  - task: "PATCH /api/admin/users/:id/role - Update user role"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested PATCH /api/admin/users/:id/role endpoint. Correctly updates user role to admin/user and validates role values. Returns 400 for invalid roles."
+
+  - task: "GET /api/admin/tickets - Get all tickets"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested GET /api/admin/tickets endpoint. Returns array of ticket objects with id, userId, subject, message, category, status, priority, createdAt, updatedAt. Retrieved 1 ticket successfully."
+
+  - task: "PATCH /api/admin/tickets/:id/close - Close a ticket"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested PATCH /api/admin/tickets/:id/close endpoint. Correctly sets ticket status to 'closed' and updates updatedAt timestamp."
+
+  - task: "DELETE /api/admin/tickets/:id - Delete a ticket"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested DELETE /api/admin/tickets/:id endpoint. Correctly deletes ticket and its related replies. Returns success message."
+
+  - task: "DELETE /api/admin/servers/:id - Delete a server"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested DELETE /api/admin/servers/:id endpoint. Correctly deletes server and its related votes. Returns success message."
+
+  - task: "GET /api/servers - Get all servers"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested GET /api/servers endpoint. Returns array of server objects sorted by vote count. Retrieved 1 server successfully with all expected fields."
+
+frontend:
+  # No frontend testing required for this task
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus: []
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+
+  - task: "POST /api/blog/categories - Create new category"
+    implemented: true
+    working: true
+    file: "app/api/blog/categories/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented POST endpoint for creating blog categories. Validates required fields (name, slug), checks for duplicate slugs, and inserts into blog_categories table."
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested POST /api/blog/categories endpoint. Creates categories with all required fields (name, slug, icon, color, description). Correctly validates duplicate slugs (409 status) and missing required fields (400 status). Generated category ID: cat_1767663091515_1gbfiz18j"
+
+  - task: "DELETE /api/blog/categories - Delete category"
+    implemented: true
+    working: true
+    file: "app/api/blog/categories/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented DELETE endpoint for removing categories. Cascade deletes all posts in the category before removing the category itself."
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested DELETE /api/blog/categories endpoint. Correctly deletes categories with cascade deletion of associated posts. Validates missing category ID parameter (400 status). Handles non-existent category IDs gracefully."
+
+  - task: "GET /api/blog/posts - Get all posts or filter by category"
+    implemented: true
+    working: true
+    file: "app/api/blog/posts/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented GET endpoint that supports categoryId and categorySlug query parameters for filtering posts by category."
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested GET /api/blog/posts endpoint. Returns array of posts (retrieved 3 existing posts). Supports filtering by categoryId and categorySlug parameters. Correctly handles non-existent category slugs with 404 status. All filtering functionality working as expected."
+
+  - task: "POST /api/blog/posts - Create new post"
+    implemented: true
+    working: true
+    file: "app/api/blog/posts/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented POST endpoint for creating blog posts. Validates required fields (title, content, categoryId, userId) and inserts into blog_posts table."
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested POST /api/blog/posts endpoint. Creates posts with all required fields (title, content, categoryId, userId) and optional fields (excerpt, tags). Correctly validates missing required fields (400 status). Auto-generates slugs and excerpts. Generated post IDs: post_1767663093424_8sl7ezeox, post_1767663093657_uysl3w3ge"
+
+  - task: "DELETE /api/blog/posts - Delete post"
+    implemented: true
+    working: true
+    file: "app/api/blog/posts/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented DELETE endpoint for removing posts. Cascade deletes all replies to the post before removing the post itself."
+        - working: true
+          agent: "testing"
+          comment: "Successfully tested DELETE /api/blog/posts endpoint. Correctly deletes posts with cascade deletion of associated replies. Validates missing post ID parameter (400 status). Handles non-existent post IDs gracefully. All delete functionality working as expected."
+
+agent_communication:
+    - agent: "testing"
+      message: "Completed comprehensive testing of all admin API endpoints for Minecraft Server List application. All 7 endpoints tested successfully with 100% pass rate. The application uses Supabase backend correctly with service role authentication for admin operations. Error handling is working properly for invalid inputs. All CRUD operations for users, tickets, and servers are functioning as expected."
+    - agent: "main"
+      message: "Added blog category and post DELETE functionality. Implemented DELETE /api/blog/categories?id=X and DELETE /api/blog/posts?id=X endpoints. Added delete buttons to admin blog management page. Ready for testing."
+    - agent: "testing"
+      message: "Completed comprehensive testing of all 5 new blog API endpoints. All endpoints passed with 100% success rate (14/14 tests passed). Tested: POST/DELETE blog categories, GET/POST/DELETE blog posts with full validation including duplicate slug detection, missing field validation, cascade deletes, and filtering by categoryId/categorySlug. All blog functionality is working correctly with proper error handling and data validation."
+    - agent: "main"
+      message: "Implemented server approval system. New features: 1) POST /api/servers now creates servers with approvalStatus='pending' 2) GET /api/servers only returns approved servers 3) GET /api/admin/servers/pending returns pending servers 4) GET /api/admin/servers/all returns all servers 5) PATCH /api/admin/servers/:id/approve approves a server 6) PATCH /api/admin/servers/:id/reject rejects a server 7) PATCH /api/admin/servers/:id/pending sets server back to pending. Updated admin servers page with tabs for Pending/Approved/Rejected servers. Updated profile page to show server approval status badges. Need to run SQL to add approvalStatus column to servers table."

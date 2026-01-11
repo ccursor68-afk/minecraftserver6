@@ -1,0 +1,13 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://minecheck.preview.emergentagent.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
