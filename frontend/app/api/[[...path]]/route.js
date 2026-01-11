@@ -20,7 +20,8 @@ export async function GET(request) {
     const userId = userIdMatch[1]
     
     try {
-      const { data, error } = await supabase
+      // Use supabaseAdmin to bypass RLS
+      const { data, error } = await supabaseAdmin
         .from('users')
         .select('id, email, role, isActive')
         .eq('id', userId)
@@ -28,7 +29,13 @@ export async function GET(request) {
       
       if (error) {
         console.error('Error fetching user:', error)
-        return NextResponse.json({ error: 'User not found' }, { status: 404 })
+        // If user doesn't exist in users table, return default role
+        return NextResponse.json({ 
+          id: userId, 
+          email: '', 
+          role: 'user', 
+          isActive: true 
+        })
       }
       
       return NextResponse.json(data)
