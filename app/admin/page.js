@@ -18,13 +18,19 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const serversRes = await fetch('/api/servers')
-      if (serversRes.ok) {
-        const servers = await serversRes.json()
-        setStats(prev => ({ ...prev, servers: servers.length }))
+      // Fetch all stats from admin stats API
+      const statsRes = await fetch('/api/admin/stats')
+      if (statsRes.ok) {
+        const data = await statsRes.json()
+        setStats({
+          servers: data.servers || 0,
+          users: data.users || 0,
+          tickets: data.tickets || 0,
+          posts: data.posts || 0
+        })
       }
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Error fetching stats:', error)
     }
   }
 
