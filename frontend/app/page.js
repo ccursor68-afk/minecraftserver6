@@ -256,6 +256,9 @@ export default function HomePage() {
               <Link href="/" className="text-green-500 hover:text-green-400 transition-colors">
                 🎮 {t('nav.servers')}
               </Link>
+              <Link href="/hostings" className="text-gray-400 hover:text-green-400 transition-colors">
+                🖥️ Hostingler
+              </Link>
               <Link href="/pricing" className="text-gray-400 hover:text-green-400 transition-colors">
                 💎 {t('pricing.title')}
               </Link>
