@@ -301,6 +301,13 @@ export default function HomePage() {
                 🎮 {t('nav.servers')}
               </Link>
               <Link 
+                href="/hostings" 
+                className="block px-4 py-2 text-gray-400 hover:bg-gray-800 hover:text-green-400 rounded"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🖥️ Hostingler
+              </Link>
+              <Link 
                 href="/pricing" 
                 className="block px-4 py-2 text-gray-400 hover:bg-gray-800 hover:text-green-400 rounded"
                 onClick={() => setMobileMenuOpen(false)}
