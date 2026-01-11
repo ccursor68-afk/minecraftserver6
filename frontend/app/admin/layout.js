@@ -14,6 +14,7 @@ export default function AdminLayout({ children }) {
   const [user, setUser] = useState(null)
   const [userRole, setUserRole] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     checkAuth()
@@ -22,28 +23,59 @@ export default function AdminLayout({ children }) {
   const checkAuth = async () => {
     try {
       const supabase = createBrowserSupabaseClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
       
-      if (!user) {
+      if (authError || !user) {
         toast.error('Please login')
         router.push('/auth/login')
         return
       }
       
-      const response = await fetch(`/api/auth/user/${user.id}`)
-      if (response.ok) {
-        const userData = await response.json()
-        if (userData.role !== 'admin') {
-          toast.error('Unauthorized access')
-          router.push('/')
-          return
+      // Try to get user role from database
+      // First try direct Supabase query (more reliable)
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('id, email, role, isActive')
+        .eq('id', user.id)
+        .single()
+      
+      if (userError) {
+        console.error('Error fetching user from DB:', userError)
+        // Fallback: Try API endpoint
+        try {
+          const response = await fetch(`/api/auth/user/${user.id}`)
+          if (response.ok) {
+            const apiUserData = await response.json()
+            if (apiUserData.role !== 'admin') {
+              toast.error('Unauthorized access')
+              router.push('/')
+              return
+            }
+            setUserRole(apiUserData.role)
+            setUser(user)
+            return
+          }
+        } catch (apiError) {
+          console.error('API fallback error:', apiError)
         }
-        setUserRole(userData.role)
+        
+        // If both methods fail, show error
+        setError('Could not verify admin status. Please try again.')
+        toast.error('Authorization check failed')
+        return
       }
       
+      if (userData.role !== 'admin') {
+        toast.error('Unauthorized access')
+        router.push('/')
+        return
+      }
+      
+      setUserRole(userData.role)
       setUser(user)
     } catch (error) {
       console.error('Auth error:', error)
+      setError('Authentication error occurred')
       router.push('/auth/login')
     } finally {
       setLoading(false)
