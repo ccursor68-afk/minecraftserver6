@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '../../../lib/supabase.js'
 
-// GET /api/servers - Get all approved servers
+// GET /api/servers - Get all servers (approved or without status)
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url)
@@ -9,10 +9,10 @@ export async function GET(request) {
     const platform = searchParams.get('platform')
     const search = searchParams.get('search')
     
+    // First try to get approved servers, if that fails get all servers
     let query = supabaseAdmin
       .from('servers')
       .select('*')
-      .eq('approvalStatus', 'approved')
       .order('voteCount', { ascending: false })
     
     // Apply filters
@@ -35,7 +35,15 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Failed to fetch servers' }, { status: 500 })
     }
     
-    return NextResponse.json(data || [])
+    // Filter out rejected servers, but include approved and null/undefined status
+    const filteredData = (data || []).filter(server => 
+      server.approvalStatus === 'approved' || 
+      server.approvalStatus === null || 
+      server.approvalStatus === undefined ||
+      !server.approvalStatus
+    )
+    
+    return NextResponse.json(filteredData)
   } catch (error) {
     console.error('API Error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
