@@ -124,6 +124,16 @@ export default function UserMenu() {
           </div>
           
           <div className="py-2">
+            {profile?.role === 'admin' && (
+              <Link href="/admin" onClick={() => setIsOpen(false)}>
+                <button className="w-full px-4 py-2 text-left hover:bg-gray-800 transition-colors flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-yellow-500" />
+                  <span>Admin Panel</span>
+                  <Badge className="ml-auto bg-yellow-600 text-xs">Admin</Badge>
+                </button>
+              </Link>
+            )}
+            
             <Link href="/submit" onClick={() => setIsOpen(false)}>
               <button className="w-full px-4 py-2 text-left hover:bg-gray-800 transition-colors flex items-center gap-2">
                 <Plus className="w-4 h-4 text-green-500" />
