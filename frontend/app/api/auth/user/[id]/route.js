@@ -10,16 +10,22 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'User ID required' }, { status: 400 })
     }
     
-    // Get user from users table
+    // Get user from users table using admin client (bypasses RLS)
     const { data: user, error } = await supabaseAdmin
       .from('users')
-      .select('id, username, email, role, createdAt')
+      .select('id, username, email, role, createdAt, isActive')
       .eq('id', userId)
       .single()
     
     if (error) {
       console.error('Error fetching user:', error)
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      // If user doesn't exist in users table, return default role
+      return NextResponse.json({ 
+        id: userId, 
+        email: '', 
+        role: 'user', 
+        isActive: true 
+      })
     }
     
     return NextResponse.json(user)
