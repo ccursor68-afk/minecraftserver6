@@ -102,13 +102,37 @@ echo "Yarn install çalıştırılıyor (bu biraz zaman alabilir)..."
 yarn install --network-timeout 100000
 
 echo "Frontend build ediliyor..."
+
 # Environment variable'ları export et (build için)
 export NEXT_PUBLIC_SUPABASE_URL=https://oouyxbznjuomqxosrkid.supabase.co
 export NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXl4YnpuanVvbXF4b3Nya2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNzUwOTAsImV4cCI6MjA4Mjk1MTA5MH0.7E-QNxKZYtquOYnz7t7igwLe_E28iNFHvGY54kedvXs
 export SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXl4YnpuanVvbXF4b3Nya2lkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzM3NTA5MCwiZXhwIjoyMDgyOTUxMDkwfQ.eFC8yP9NNqTSkjRMgJQ3ZDaufLSS6HZB9dkDLODpBHc
 export CORS_ORIGINS=https://serverlistrank.com,https://www.serverlistrank.com
 
-yarn build
+# Env dosyalarını kontrol et
+echo "Env dosyaları kontrol ediliyor..."
+if [ -f .env.local ]; then
+    echo "✓ .env.local mevcut"
+fi
+if [ -f .env.production ]; then
+    echo "✓ .env.production mevcut"
+fi
+
+# lib/supabase.js dosyasını kontrol et
+if [ -f lib/supabase.js ]; then
+    echo "✓ lib/supabase.js mevcut"
+else
+    echo "✗ UYARI: lib/supabase.js bulunamadı!"
+fi
+
+# Build işlemini çalıştır
+echo "Build başlatılıyor..."
+yarn build || {
+    echo -e "${RED}✗ Build başarısız oldu!${NC}"
+    echo "Logları kontrol etmek için:"
+    echo "  cat $APP_DIR/frontend/.next/trace"
+    exit 1
+}
 
 # 9. Backend kurulumu
 echo "${YELLOW}[9/10] Backend bağımlılıkları kuruluyor...${NC}"
