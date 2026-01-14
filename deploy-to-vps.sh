@@ -82,8 +82,16 @@ cd $APP_DIR
 echo "${YELLOW}[8/10] Frontend bağımlılıkları kuruluyor...${NC}"
 cd $APP_DIR/frontend
 
-# Environment dosyası oluştur
+# Environment dosyaları oluştur (.env.local VE .env.production)
 cat > .env.local << 'EOF'
+NEXT_PUBLIC_SUPABASE_URL=https://oouyxbznjuomqxosrkid.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXl4YnpuanVvbXF4b3Nya2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNzUwOTAsImV4cCI6MjA4Mjk1MTA5MH0.7E-QNxKZYtquOYnz7t7igwLe_E28iNFHvGY54kedvXs
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXl4YnpuanVvbXF4b3Nya2lkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzM3NTA5MCwiZXhwIjoyMDgyOTUxMDkwfQ.eFC8yP9NNqTSkjRMgJQ3ZDaufLSS6HZB9dkDLODpBHc
+CORS_ORIGINS=https://serverlistrank.com,https://www.serverlistrank.com
+EOF
+
+# .env.production dosyası da oluştur (build için)
+cat > .env.production << 'EOF'
 NEXT_PUBLIC_SUPABASE_URL=https://oouyxbznjuomqxosrkid.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXl4YnpuanVvbXF4b3Nya2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNzUwOTAsImV4cCI6MjA4Mjk1MTA5MH0.7E-QNxKZYtquOYnz7t7igwLe_E28iNFHvGY54kedvXs
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXl4YnpuanVvbXF4b3Nya2lkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzM3NTA5MCwiZXhwIjoyMDgyOTUxMDkwfQ.eFC8yP9NNqTSkjRMgJQ3ZDaufLSS6HZB9dkDLODpBHc
@@ -94,6 +102,12 @@ echo "Yarn install çalıştırılıyor (bu biraz zaman alabilir)..."
 yarn install --network-timeout 100000
 
 echo "Frontend build ediliyor..."
+# Environment variable'ları export et (build için)
+export NEXT_PUBLIC_SUPABASE_URL=https://oouyxbznjuomqxosrkid.supabase.co
+export NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXl4YnpuanVvbXF4b3Nya2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNzUwOTAsImV4cCI6MjA4Mjk1MTA5MH0.7E-QNxKZYtquOYnz7t7igwLe_E28iNFHvGY54kedvXs
+export SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXl4YnpuanVvbXF4b3Nya2lkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzM3NTA5MCwiZXhwIjoyMDgyOTUxMDkwfQ.eFC8yP9NNqTSkjRMgJQ3ZDaufLSS6HZB9dkDLODpBHc
+export CORS_ORIGINS=https://serverlistrank.com,https://www.serverlistrank.com
+
 yarn build
 
 # 9. Backend kurulumu
