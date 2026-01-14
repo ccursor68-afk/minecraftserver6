@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
+import { supabaseAdmin } from '../../../../lib/supabase.js'
 
 // GET /api/hostings/:id - Get hosting by ID with reviews
 export async function GET(request, { params }) {
